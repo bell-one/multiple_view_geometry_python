@@ -52,10 +52,10 @@ def get_z_rotmat(angle):
     return np.array([[cos, -sin, 0], [sin, cos, 0], [0, 0, 1]])
 
 def get_3d_rotmat_xyz(angle_x, angle_y, angle_z):
-    return get_x_rotmat(angle_x) @ get_y_rotmat(angle_y) @ get_z_rotmat(angle_z)
+    return get_z_rotmat(angle_z) @ get_y_rotmat(angle_y) @ get_x_rotmat(angle_x)
 
 def get_3d_rotmat_zyx(angle_z, angle_y, angle_x):
-    return get_z_rotmat(angle_z) @ get_y_rotmat(angle_y) @ get_x_rotmat(angle_x)
+    return get_x_rotmat(angle_x) @ get_y_rotmat(angle_y) @ get_z_rotmat(angle_z)
 
 
 ax3d = fig.add_subplot(111, projection="3d")
@@ -79,7 +79,7 @@ ax3d.set_zlim(min, max)
 point3d = np.array([2, 0, 2])
 ax3d.scatter(point3d[0], point3d[1], point3d[2])
 
-rotation3d = get_3d_rotmat_xyz(45, 45, 45)
+rotation3d = get_3d_rotmat_xyz(0, 30, 0)
 transposed_3d = rotation3d @ np.transpose(point3d)
 ax3d.scatter(transposed_3d[0], transposed_3d[1], transposed_3d[2])
 
