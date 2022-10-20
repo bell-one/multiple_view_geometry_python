@@ -50,6 +50,7 @@ for xyz in xyz3d:
 
 ## check images
 cv2.imshow('original', img)
+cv2.imwrite('original2.jpg', img)
 cv2.waitKey(0)
 
 

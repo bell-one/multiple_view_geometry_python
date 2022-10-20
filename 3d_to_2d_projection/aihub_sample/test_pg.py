@@ -45,26 +45,25 @@ for xy in xy2d:
 
 
 r_mat, _ = cv2.Rodrigues(np.array(extrinsic[:3]))
-id = 0
+
 ## draw 3d label blue with projection geometry
 for xyz in xyz3d:
-
+    ## xp - x0
     r = r_mat[0][0] * (xyz[0] - tx) + r_mat[1][0] * (xyz[1] - ty) + r_mat[2][0] * (xyz[2] - tz)
+    ## yp - y0
     s = r_mat[0][1] * (xyz[0] - tx) + r_mat[1][1] * (xyz[1] - ty) + r_mat[2][1] * (xyz[2] - tz)
+    ## zp - z0
     q = r_mat[0][2] * (xyz[0] - tx) + r_mat[1][2] * (xyz[1] - ty) + r_mat[2][2] * (xyz[2] - tz)
 
-    x = cx + fx * r / q
-    y = -cy + fy * s / q
+    x = cx - fx * r / q
+    y = cy - fy * s / q
 
-    # opencv
-    # p, _ = cv2.projectPoints(xyz, np.array(extrinsic[:3]), np.array(extrinsic[3:]), intrinsic_mat, None)
-    # xy = p[0][0]
     img = cv2.circle(img, (int(x), int(y)), 10, (255, 0, 0), 5)
-    id += 1
 
 
 ## check images
 cv2.imshow('original', img)
+cv2.imwrite('original_pg.jpg', img)
 cv2.waitKey(0)
 
 

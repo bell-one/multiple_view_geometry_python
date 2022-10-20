@@ -19,7 +19,7 @@ ax2d.scatter(transposed_2d[0], transposed_2d[1])
 plt.axis([0, 10, 0, 10])
 
 
-plt.annotate('', xy=transposed_2d, xytext=point2d, arrowprops=dict(facecolor='black'))
+plt.annotate('', xy=transposed_2d, xytext=point2d, arrowprops=dict(facecolor='black', arrowstyle="-|>"))
 
 
 

@@ -28,7 +28,6 @@ class Arrow3D(FancyArrowPatch):
 
         return np.min(zs)
 
-fig = plt.figure(figsize=(5, 5))
 
 
 def get_x_rotmat(angle):
@@ -57,45 +56,47 @@ def get_3d_rotmat_xyz(angle_x, angle_y, angle_z):
 def get_3d_rotmat_zyx(angle_z, angle_y, angle_x):
     return get_x_rotmat(angle_x) @ get_y_rotmat(angle_y) @ get_z_rotmat(angle_z)
 
+if __name__ == '__main__':
 
-ax3d = fig.add_subplot(111, projection="3d")
+    fig = plt.figure(figsize=(5, 5))
+    ax3d = fig.add_subplot(111, projection="3d")
 
-min, max = -5, 5
+    min, max = -5, 5
 
-axis = np.array([[min, 0, 0], [max, 0, 0], [0, min, 0], [0, max, 0], [0, 0, min], [0, 0, max]])
+    axis = np.array([[min, 0, 0], [max, 0, 0], [0, min, 0], [0, max, 0], [0, 0, min], [0, 0, max]])
 
-axis_x = Arrow3D(axis[0], axis[1])
-axis_y = Arrow3D(axis[2], axis[3])
-axis_z = Arrow3D(axis[4], axis[5])
-ax3d.add_artist(axis_x)
-ax3d.add_artist(axis_y)
-ax3d.add_artist(axis_z)
+    axis_x = Arrow3D(axis[0], axis[1])
+    axis_y = Arrow3D(axis[2], axis[3])
+    axis_z = Arrow3D(axis[4], axis[5])
+    ax3d.add_artist(axis_x)
+    ax3d.add_artist(axis_y)
+    ax3d.add_artist(axis_z)
 
-ax3d.set_xlim(min, max)
-ax3d.set_ylim(min, max)
-ax3d.set_zlim(min, max)
-
-
-point3d = np.array([2, 0, 2])
-ax3d.scatter(point3d[0], point3d[1], point3d[2])
-
-rotation3d = get_3d_rotmat_xyz(0, 30, 0)
-transposed_3d = rotation3d @ np.transpose(point3d)
-ax3d.scatter(transposed_3d[0], transposed_3d[1], transposed_3d[2])
-
-axis = np.array([[min, 0, 0], [max, 0, 0], [0, min, 0], [0, max, 0], [0, 0, min], [0, 0, max]])
-rotated_axis = rotation3d @ np.transpose(axis)
-rotated_axis = np.transpose(rotated_axis)
-axis_x = Arrow3D(rotated_axis[0], rotated_axis[1])
-axis_y = Arrow3D(rotated_axis[2], rotated_axis[3])
-axis_z = Arrow3D(rotated_axis[4], rotated_axis[5])
-ax3d.add_artist(axis_x)
-ax3d.add_artist(axis_y)
-ax3d.add_artist(axis_z)
+    ax3d.set_xlim(min, max)
+    ax3d.set_ylim(min, max)
+    ax3d.set_zlim(min, max)
 
 
-arrow = Arrow3D(point3d, transposed_3d)
-ax3d.add_artist(arrow)
+    point3d = np.array([2, 0, 2])
+    ax3d.scatter(point3d[0], point3d[1], point3d[2])
 
-plt.show()
+    rotation3d = get_3d_rotmat_xyz(0, 30, 0)
+    transposed_3d = rotation3d @ np.transpose(point3d)
+    ax3d.scatter(transposed_3d[0], transposed_3d[1], transposed_3d[2])
+
+    axis = np.array([[min, 0, 0], [max, 0, 0], [0, min, 0], [0, max, 0], [0, 0, min], [0, 0, max]])
+    rotated_axis = rotation3d @ np.transpose(axis)
+    rotated_axis = np.transpose(rotated_axis)
+    axis_x = Arrow3D(rotated_axis[0], rotated_axis[1])
+    axis_y = Arrow3D(rotated_axis[2], rotated_axis[3])
+    axis_z = Arrow3D(rotated_axis[4], rotated_axis[5])
+    ax3d.add_artist(axis_x)
+    ax3d.add_artist(axis_y)
+    ax3d.add_artist(axis_z)
+
+
+    arrow = Arrow3D(point3d, transposed_3d)
+    ax3d.add_artist(arrow)
+
+    plt.show()
 
