@@ -48,18 +48,23 @@ if __name__ == '__main__':
 
 
 
-    r_mat, _ = cv2.Rodrigues(np.array(extrinsic[:3]))
+    r_mat_cv, _ = cv2.Rodrigues(np.array(extrinsic[:3]))
 
-    ax = math.atan2(r_mat[2][1], r_mat[2][2]) * 180 / np.pi
-    ay = math.atan2(-r_mat[2][0], math.sqrt(r_mat[2][1]*r_mat[2][1] + r_mat[2][2]*r_mat[2][2])) * 180 / np.pi
-    az = math.atan2(r_mat[1][0], r_mat[0][0]) * 180 / np.pi
+    from scipy.spatial.transform import Rotation as R
 
-    r_t2 = rot3d.get_3d_rotmat_xyz(ax, ay, az)
+    # ax = math.atan2(r_mat[2][1], r_mat[2][2]) * 180 / np.pi
+    # ay = math.atan2(-r_mat[2][0], math.sqrt(r_mat[2][1]*r_mat[2][1] + r_mat[2][2]*r_mat[2][2])) * 180 / np.pi
+    # az = math.atan2(r_mat[1][0], r_mat[0][0]) * 180 / np.pi
 
-    r_t = rot3d.get_3d_rotmat_zyx(az, ay, ax)
+    r1 = R.from_rotvec(np.array(extrinsic[:3]))
+    r1_mat_scipy = r1.as_matrix()
+    e = r1.as_euler('xyz', degrees=True)
 
 
+    r_t2 = rot3d.get_3d_rotmat_xyz(e[0], e[1], e[2])
+    r_mat = R.from_euler('xyz', e, degrees=True).as_matrix()
 
+    #r_mat = np.transpose(r_mat)
     ## draw 3d label blue with projection geometry
     for xyz in xyz3d:
         ## xp - x0
@@ -70,8 +75,10 @@ if __name__ == '__main__':
         q = r_mat[0][2] * (xyz[0] - tx) + r_mat[1][2] * (xyz[1] - ty) + r_mat[2][2] * (xyz[2] - tz)
 
         x = cx + fx * r / q
-        y = cy + fy * s / q
+        y = cy - fy * s / q
 
+        print(x)
+        print(y)
         img = cv2.circle(img, (int(x), int(y)), 10, (255, 0, 0), 5)
 
 

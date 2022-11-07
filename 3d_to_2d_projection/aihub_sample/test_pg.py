@@ -57,7 +57,8 @@ for xyz in xyz3d:
 
     x = cx - fx * r / q
     y = cy - fy * s / q
-
+    print(x)
+    print(y)
     img = cv2.circle(img, (int(x), int(y)), 10, (255, 0, 0), 5)
 
 
